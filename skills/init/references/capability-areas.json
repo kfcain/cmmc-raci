@@ -1,0 +1,304 @@
+{
+  "categories": [
+    {
+      "id": "endpoint",
+      "name": "Endpoint Security",
+      "capabilities": [
+        {
+          "id": "cap-edr",
+          "name": "Endpoint Detection & Response (EDR)",
+          "description": "Deployment, configuration, and ongoing monitoring of EDR tooling across all managed endpoints. Includes alert triage and response.",
+          "cmmc_controls": ["3.14.1", "3.14.2", "3.14.6", "3.14.7"]
+        },
+        {
+          "id": "cap-av",
+          "name": "Anti-Malware / Antivirus",
+          "description": "Deployment and maintenance of anti-malware solutions, signature updates, and scan scheduling on endpoints and servers.",
+          "cmmc_controls": ["3.14.2"]
+        },
+        {
+          "id": "cap-mdm",
+          "name": "Mobile Device Management (MDM)",
+          "description": "Enrollment, policy enforcement, and remote wipe capability for mobile devices that access organizational systems or CUI.",
+          "cmmc_controls": ["3.1.18", "3.1.19"]
+        },
+        {
+          "id": "cap-device-encryption",
+          "name": "Device Encryption",
+          "description": "Full-disk encryption enforcement on laptops, desktops, and removable media using FIPS-validated cryptographic modules.",
+          "cmmc_controls": ["3.13.10"]
+        }
+      ]
+    },
+    {
+      "id": "identity",
+      "name": "Identity & Access Management",
+      "capabilities": [
+        {
+          "id": "cap-iam",
+          "name": "Identity & Access Management (IAM)",
+          "description": "Provisioning, deprovisioning, and ongoing review of user accounts, roles, and access rights across all systems.",
+          "cmmc_controls": ["3.1.1", "3.1.2", "3.5.1", "3.5.2"]
+        },
+        {
+          "id": "cap-mfa",
+          "name": "Multi-Factor Authentication (MFA)",
+          "description": "Enforcement of MFA for all privileged and non-privileged accounts accessing organizational systems, especially remote access.",
+          "cmmc_controls": ["3.5.3"]
+        },
+        {
+          "id": "cap-pam",
+          "name": "Privileged Access Management (PAM)",
+          "description": "Management of privileged accounts including separation of duties, just-in-time access, and privileged session monitoring.",
+          "cmmc_controls": ["3.1.6", "3.1.7"]
+        },
+        {
+          "id": "cap-directory",
+          "name": "Directory Services (AD / Entra ID)",
+          "description": "Administration of on-premises or cloud directory services including group policy, organizational units, and federation.",
+          "cmmc_controls": ["3.5.1", "3.5.2", "3.5.4"]
+        }
+      ]
+    },
+    {
+      "id": "vuln",
+      "name": "Vulnerability Management",
+      "capabilities": [
+        {
+          "id": "cap-vuln-scan",
+          "name": "Vulnerability Scanning",
+          "description": "Periodic authenticated vulnerability scanning of all in-scope systems with remediation tracking and reporting.",
+          "cmmc_controls": ["3.11.2", "3.11.3"]
+        },
+        {
+          "id": "cap-pentest",
+          "name": "Penetration Testing",
+          "description": "Periodic adversarial testing of systems and networks to identify exploitable vulnerabilities before assessors or attackers do.",
+          "cmmc_controls": ["3.11.2"]
+        },
+        {
+          "id": "cap-patch",
+          "name": "Patch Management",
+          "description": "Timely identification, testing, and deployment of security patches across all managed systems within defined SLAs.",
+          "cmmc_controls": ["3.14.1", "3.14.4", "3.14.5", "3.11.2"]
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "name": "Network Security",
+      "capabilities": [
+        {
+          "id": "cap-firewall",
+          "name": "Firewall Management",
+          "description": "Configuration, rule review, and ongoing management of perimeter and internal firewalls enforcing least-privilege traffic policy.",
+          "cmmc_controls": ["3.13.1", "3.13.5", "3.13.6"]
+        },
+        {
+          "id": "cap-segmentation",
+          "name": "Network Segmentation",
+          "description": "Design and enforcement of network boundaries isolating CUI systems from general IT and external networks.",
+          "cmmc_controls": ["3.13.3", "3.13.4"]
+        },
+        {
+          "id": "cap-vpn",
+          "name": "VPN / Remote Access",
+          "description": "Provisioning and management of secure remote access solutions including split tunneling policy and session controls.",
+          "cmmc_controls": ["3.1.12", "3.13.5"]
+        },
+        {
+          "id": "cap-wireless",
+          "name": "Wireless Security",
+          "description": "Configuration and monitoring of wireless networks including WPA3 enforcement, rogue AP detection, and guest network isolation.",
+          "cmmc_controls": ["3.13.15"]
+        },
+        {
+          "id": "cap-dns",
+          "name": "DNS / DHCP Management",
+          "description": "Management of internal DNS and DHCP services including DNS filtering, DNSSEC, and rogue device detection.",
+          "cmmc_controls": ["3.13.5"]
+        }
+      ]
+    },
+    {
+      "id": "cloud",
+      "name": "Cloud Security",
+      "capabilities": [
+        {
+          "id": "cap-cloud-infra",
+          "name": "Cloud Infrastructure Security (IaaS / PaaS)",
+          "description": "Security configuration of cloud-hosted infrastructure including identity federation, network security groups, and CSP CRM alignment.",
+          "cmmc_controls": ["3.1.3", "3.12.4", "3.13.3"]
+        },
+        {
+          "id": "cap-saas",
+          "name": "SaaS Security & Configuration",
+          "description": "Security hardening of SaaS platforms (M365, Salesforce, etc.) including conditional access, DLP policies, and admin role review.",
+          "cmmc_controls": ["3.4.1", "3.4.2", "3.13.3"]
+        },
+        {
+          "id": "cap-casb",
+          "name": "Cloud Access Security Broker (CASB)",
+          "description": "Visibility and control over cloud application usage, shadow IT detection, and data exfiltration prevention via CASB tooling.",
+          "cmmc_controls": ["3.1.3", "3.13.3"]
+        },
+        {
+          "id": "cap-cloud-backup",
+          "name": "Cloud Backup & Recovery",
+          "description": "Management of cloud-resident backup jobs, retention policies, and restoration testing for CUI-bearing systems.",
+          "cmmc_controls": ["3.8.9"]
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "name": "Data Security",
+      "capabilities": [
+        {
+          "id": "cap-data-class",
+          "name": "Data Classification & CUI Handling",
+          "description": "Definition and enforcement of data classification standards, CUI identification procedures, and handling/marking requirements per 32 CFR 2002.",
+          "cmmc_controls": ["3.8.1", "3.8.2"]
+        },
+        {
+          "id": "cap-dlp",
+          "name": "Data Loss Prevention (DLP)",
+          "description": "Deployment and tuning of DLP controls to detect and prevent unauthorized exfiltration of CUI via email, USB, or cloud upload.",
+          "cmmc_controls": ["3.1.3", "3.13.1"]
+        },
+        {
+          "id": "cap-encrypt-rest",
+          "name": "Encryption at Rest",
+          "description": "Enforcement of FIPS 140-2/-3 validated encryption for CUI stored on servers, databases, workstations, and cloud storage.",
+          "cmmc_controls": ["3.13.10", "3.13.16"]
+        },
+        {
+          "id": "cap-encrypt-transit",
+          "name": "Encryption in Transit",
+          "description": "Enforcement of TLS 1.2+ with FIPS-validated cipher suites for all CUI transmitted across networks, including internal segments.",
+          "cmmc_controls": ["3.13.8", "3.13.11"]
+        },
+        {
+          "id": "cap-media",
+          "name": "Media Sanitization & Disposal",
+          "description": "Controlled sanitization (NIST SP 800-88) and disposal of storage media containing CUI, including certificates of destruction.",
+          "cmmc_controls": ["3.8.3", "3.8.4"]
+        }
+      ]
+    },
+    {
+      "id": "monitoring",
+      "name": "Monitoring & Operations",
+      "capabilities": [
+        {
+          "id": "cap-siem",
+          "name": "SIEM / Security Monitoring",
+          "description": "Aggregation, correlation, and alerting on security events from all in-scope systems with defined response SLAs.",
+          "cmmc_controls": ["3.3.1", "3.3.2"]
+        },
+        {
+          "id": "cap-logging",
+          "name": "Log Management & Retention",
+          "description": "Collection, centralization, integrity protection, and retention of audit logs for all CUI-handling systems for the required period.",
+          "cmmc_controls": ["3.3.1", "3.3.2", "3.3.5"]
+        },
+        {
+          "id": "cap-secops",
+          "name": "Security Operations",
+          "description": "Day-to-day security operations including alert triage, threat hunting, indicator management, and escalation to incident response.",
+          "cmmc_controls": ["3.6.2", "3.14.6"]
+        }
+      ]
+    },
+    {
+      "id": "ir",
+      "name": "Incident Response",
+      "capabilities": [
+        {
+          "id": "cap-ir-plan",
+          "name": "Incident Response Planning",
+          "description": "Development, maintenance, and testing of the incident response plan including roles, escalation paths, and required notification timelines.",
+          "cmmc_controls": ["3.6.1", "3.6.2"]
+        },
+        {
+          "id": "cap-ir-handle",
+          "name": "Incident Handling & Containment",
+          "description": "Execution of incident response procedures including detection, containment, eradication, recovery, and post-incident review.",
+          "cmmc_controls": ["3.6.1", "3.6.2"]
+        },
+        {
+          "id": "cap-bcdr",
+          "name": "Business Continuity & Disaster Recovery",
+          "description": "Development and testing of BC/DR plans ensuring recovery of CUI-processing systems within defined RTO/RPO targets.",
+          "cmmc_controls": ["3.11.1"]
+        }
+      ]
+    },
+    {
+      "id": "governance",
+      "name": "Governance & Compliance",
+      "capabilities": [
+        {
+          "id": "cap-policy",
+          "name": "Information Security Policy",
+          "description": "Development, review, and communication of organizational information security policies and procedures aligned to CMMC requirements.",
+          "cmmc_controls": ["3.12.4"]
+        },
+        {
+          "id": "cap-risk",
+          "name": "Risk Assessment",
+          "description": "Periodic assessment of organizational risk to operations, assets, and CUI, with documented risk acceptance or remediation decisions.",
+          "cmmc_controls": ["3.11.1", "3.11.2", "3.11.3"]
+        },
+        {
+          "id": "cap-training",
+          "name": "Security Awareness Training",
+          "description": "Delivery of role-based security awareness training including CUI handling, phishing awareness, and insider threat recognition.",
+          "cmmc_controls": ["3.2.1", "3.2.2", "3.2.3"]
+        },
+        {
+          "id": "cap-cmmc",
+          "name": "CMMC Assessment Preparation",
+          "description": "Coordination of CMMC Level 2 assessment activities including evidence collection, SSP maintenance, and assessor liaison.",
+          "cmmc_controls": ["3.12.1", "3.12.2", "3.12.4"]
+        },
+        {
+          "id": "cap-supply-chain",
+          "name": "Third-Party / Supply Chain Risk",
+          "description": "Vetting of vendors and subcontractors who handle CUI, including flow-down requirements and periodic supplier risk reviews.",
+          "cmmc_controls": ["3.11.1", "3.11.3"]
+        },
+        {
+          "id": "cap-config-mgmt",
+          "name": "Configuration & Change Management",
+          "description": "Establishment and enforcement of configuration baselines for all CUI-handling systems, with formal change control for modifications.",
+          "cmmc_controls": ["3.4.1", "3.4.2", "3.4.5"]
+        }
+      ]
+    },
+    {
+      "id": "physical",
+      "name": "Physical Security",
+      "capabilities": [
+        {
+          "id": "cap-physical-access",
+          "name": "Physical Access Control",
+          "description": "Management of physical access controls to facilities and areas where CUI is processed or stored, including badge systems and visitor logs.",
+          "cmmc_controls": ["3.10.1", "3.10.2"]
+        },
+        {
+          "id": "cap-facility",
+          "name": "Facility Security",
+          "description": "Oversight of facility security measures including perimeter controls, cameras, alarms, and environmental protections for CUI areas.",
+          "cmmc_controls": ["3.10.1", "3.10.3"]
+        },
+        {
+          "id": "cap-equipment",
+          "name": "Equipment Handling & Disposal",
+          "description": "Controlled handling, maintenance, and disposal of IT equipment that has processed or stored CUI, with documented chain of custody.",
+          "cmmc_controls": ["3.8.3", "3.10.5"]
+        }
+      ]
+    }
+  ]
+}

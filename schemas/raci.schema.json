@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "raci.schema.json",
+  "title": "CMMC Information Security Responsibility Matrix",
+  "type": "object",
+  "required": ["schema_version", "id", "client", "version", "last_updated", "roles", "assignments", "coverage_check"],
+  "properties": {
+    "schema_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "id": { "type": "string" },
+    "client": { "type": "string", "minLength": 1 },
+    "version": { "type": "string" },
+    "last_updated": { "type": "string", "format": "date-time" },
+    "roles": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Role" }
+    },
+    "assignments": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Assignment" }
+    },
+    "coverage_check": { "$ref": "#/$defs/CoverageCheck" }
+  },
+  "$defs": {
+    "Role": {
+      "type": "object",
+      "required": ["id", "title", "department"],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "department": { "type": "string" },
+        "person_name": { "type": ["string", "null"] },
+        "person_email": { "type": ["string", "null"] },
+        "person_title": { "type": ["string", "null"] }
+      }
+    },
+    "Assignment": {
+      "type": "object",
+      "required": ["capability_id", "role_id", "raci"],
+      "properties": {
+        "capability_id": { "type": "string" },
+        "role_id": { "type": "string" },
+        "raci": { "type": "string", "enum": ["R", "A", "C", "I"] },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "CoverageCheck": {
+      "type": "object",
+      "required": ["capabilities_without_R", "capabilities_without_A", "last_validated"],
+      "properties": {
+        "capabilities_without_R": { "type": "array", "items": { "type": "string" } },
+        "capabilities_without_A": { "type": "array", "items": { "type": "string" } },
+        "last_validated": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
