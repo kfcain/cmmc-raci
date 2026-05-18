@@ -1,18 +1,18 @@
 ---
 name: describe
-description: Interactively review and refine R/A/C/I assignments category by category. Also collects person names and emails for each role. Run after cmmc-raci:init.
+description: Interactively review and refine Primary/Backup assignments category by category, and collect tool descriptions, access methods, frequency, and person contact info. Run after cmmc-raci:init.
 ---
 
 # cmmc-raci:describe — Interactive Assignment Review
 
 ## Purpose
-Walks through all 9 capability categories with the user, confirming or adjusting R/A/C/I assignments for each. Optionally collects person names and contact info per role. Ends with a coverage check ensuring every capability has at least one R and one A.
+Walks through all 10 capability categories with the user, confirming or adjusting Primary/Backup assignments, tool descriptions, access methods, and frequency for each. Optionally collects person names and contact info per role. Every capability must end with a Primary assigned.
 
 ## Preconditions
 `~/cmmc-raci-data/{client-slug}/raci.json` must exist (run `cmmc-raci:init` first).
 
 ## Reference Files
-- `skills/describe/references/family-guidance.json` — context text for each capability
+- `skills/describe/references/family-guidance.json` — 1-2 sentence context per capability (for the inspector panel)
 - `skills/init/references/capability-areas.json` — canonical capability list
 
 ## What to Do
@@ -22,57 +22,68 @@ Ask: "Which client's matrix are you reviewing?" Show a list of directories found
 
 Read `~/cmmc-raci-data/{client-slug}/raci.json` and `capability-areas.json`.
 
+Build a role lookup map: `{ roleId → role }` for display.
+
 ### Step 2 — Category-by-category review
-For each of the 9 categories (endpoint, identity, vuln, network, cloud, data, monitoring, ir, governance, physical):
+For each of the 10 categories (endpoint, identity, vuln, network, cloud, data, monitoring, ir, governance, physical):
 
 1. Display the current assignments for that category as a compact table:
+
    ```
    ENDPOINT SECURITY
-   ─────────────────────────────────────────────────────────────────
-   Capability                     CISO  ISSO  SysAdm  NetEng  Cloud  HR  Legal  ITDir
-   Endpoint Detection & Response   A     C     R       ─       C     ─    ─     I
-   Anti-Malware / Antivirus        A     C     R       ─       ─     ─    ─     I
-   Mobile Device Management        A     C     R       ─       ─     I    ─     I
-   Device Encryption               A     R     R       ─       C     ─    ─     I
+   ────────────────────────────────────────────────────────────────────────
+   Capability                     Primary          Backup           Freq
+   Endpoint Detection & Response  SysAdmin         ISSO             Daily
+   Anti-Malware / Antivirus       SysAdmin         ISSO             Weekly
+   Mobile Device Management       SysAdmin         ISSO             Weekly
+   Device Encryption              SysAdmin         ISSO             Monthly
    ```
 
-2. Use AskUserQuestion: "Does the **{Category Name}** section look right, or do you need to make changes?"
+   Show abbreviated role names (first word of title or person_name if set).
+
+2. Use AskUserQuestion: "Does the **{Category Name}** section look right?"
    Options: "Looks good", "Make changes"
 
-3. If "Make changes": ask them to describe what to change in plain text (e.g. "Move EDR responsible from SysAdmin to Cloud Admin" or "Add Legal as Consulted for Device Encryption"). Apply the changes to `raci.json` and redisplay the updated table, then ask again.
+3. If "Make changes": ask them to describe what to change in plain text — for example:
+   - "Move EDR primary to Cloud Admin"
+   - "Add backup for Device Encryption — Network Engineer"
+   - "Change patch management frequency to Monthly"
+   - "Add tool description for SIEM: Microsoft Sentinel"
+   Apply the changes to the assignments in memory, redisplay the updated table, then ask again.
 
-4. After user confirms a category, write the updated assignments to `raci.json` before moving to the next category.
+4. After the user confirms a category, write the updated assignments to `raci.json` before moving on.
 
-### Step 3 — Collect person info (optional)
-After all categories are confirmed, ask: "Would you like to add person names and contact info to each role? This appears in the viewer's role cards and inspector panel."
+### Step 3 — Access methods review (optional, per-capability)
+After categories are confirmed, ask: "Would you like to review access methods for any capabilities? (e.g., flag which use VPN, CLOUD, ON-PREM, or VDI)"
 
-If yes: for each role, ask for person_name, person_email, and person_title. Use AskUserQuestion in a loop. Write updates to `raci.json` after each role.
+If yes: present capabilities that currently have no access methods set (empty array) or where the default may not fit. Accept free-text adjustments. Valid values: "VPN", "ON-PREM", "VDI", "CLOUD".
 
 If no: skip.
 
-### Step 4 — Coverage check
-Compute:
-- `capabilities_without_R`: capability IDs where no assignment has raci="R"
-- `capabilities_without_A`: capability IDs where no assignment has raci="A"
+### Step 4 — Collect person info (optional)
+Ask: "Would you like to add person names and contact info to each role? This shows in the viewer's By Person cards and Personnel Directory."
 
-Update `coverage_check` in `raci.json` with current timestamp.
+If yes: for each role, collect `person_name`, `person_email` (optional), and `person_title` (optional). Write to `raci.json` after each role entry.
 
-### Step 5 — Summary
+If no: skip.
+
+### Step 5 — Coverage check and summary
+Verify every capability has a non-null `primary_role_id`. List any gaps.
+
+Update `last_updated` timestamp in `raci.json`.
+
 Print:
 ```
 Review complete for {Org Name}
 
-Capabilities reviewed: 35
+Capabilities reviewed: 40 (10 categories)
 Roles: {N}
-Total assignments: {M}
 
 Coverage:
-  ✓ All 35 capabilities have at least one Responsible (R)
-  ✓ All 35 capabilities have at least one Accountable (A)
+  ✓ All 40 capabilities have a Primary assigned
+  [OR: ⚠ {N} capabilities missing Primary: {list}]
 
-[OR if gaps:]
-  ⚠ {N} capabilities have no Responsible (R): {list}
-  ⚠ {N} capabilities have no Accountable (A): {list}
+Capabilities with tool descriptions: {count} / 40
 
 Next step: run cmmc-raci:view to generate the HTML viewer.
 ```
@@ -82,7 +93,9 @@ Next step: run cmmc-raci:view to generate the HTML viewer.
 - Does not add new capability areas (those are defined in capability-areas.json)
 
 ## Notes for Claude
-- Always show the table before asking — never make the user imagine the current state
-- Work category by category, not capability by capability — the user should only drill down if they say "make changes"
+- Always show the table first — never make the user reconstruct the current state in their head
+- Work category by category; only drill into individual capabilities when the user says "make changes"
 - After every write to `raci.json`, update `last_updated` timestamp
-- When applying plain-text changes, confirm your interpretation before writing
+- Confirm your interpretation of plain-text changes before writing (e.g., "Setting EDR primary to role-cloudadmin — correct?")
+- Access method values are strictly: "VPN", "ON-PREM", "VDI", "CLOUD" — reject any other values
+- Frequency values are strictly: "Daily", "Weekly", "Monthly", "Quarterly", "Annually", "As Needed", "24/7 On-Call"

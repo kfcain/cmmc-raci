@@ -1,343 +1,479 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RACI Viewer</title>
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a; --border: #2d3148;
-    --text: #e2e8f0; --text-muted: #7b82a0; --text-dim: #4a5068; --accent: #7c6ff7;
-    --r-bg: #0f4f2a; --r-text: #4ade80; --r-border: #16a34a;
-    --a-bg: #4d2f00; --a-text: #fb923c; --a-border: #c2410c;
-    --c-bg: #0f2d4f; --c-text: #60a5fa; --c-border: #1d4ed8;
-    --i-bg: #1e2035; --i-text: #94a3b8; --i-border: #334155;
-    --warn-r: #3f1515; --warn-a: #3f2a10;
-  }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-  header { height: 56px; min-height: 56px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 16px; flex-shrink: 0; }
-  .header-client { font-size: 16px; font-weight: 700; }
-  .header-sub { flex: 1; }
-  .header-title { font-size: 12px; color: var(--text-muted); }
-  .header-meta { font-size: 11px; color: var(--text-dim); white-space: nowrap; }
-  .header-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; }
-  .header-btn:hover { color: var(--text); border-color: var(--accent); }
-  .body { display: flex; flex: 1; overflow: hidden; }
-  .left-panel { width: 260px; min-width: 260px; background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; padding: 12px 10px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
-  .left-label { font-size: 10px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: .08em; padding: 4px 6px 8px; }
-  .role-card { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; background: var(--bg); }
-  .role-card:hover, .role-card.active { border-color: var(--accent); background: var(--surface2); }
-  .role-title { font-weight: 600; font-size: 12px; line-height: 1.3; }
-  .role-dept { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .role-person { font-size: 11px; color: var(--text-dim); margin-top: 4px; font-style: italic; }
-  .role-email { font-size: 10px; color: var(--accent); margin-top: 1px; }
-  .role-badges { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
-  .rb { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; }
-  .rb-R { background: var(--r-bg); color: var(--r-text); border: 1px solid var(--r-border); }
-  .rb-A { background: var(--a-bg); color: var(--a-text); border: 1px solid var(--a-border); }
-  .rb-C { background: var(--c-bg); color: var(--c-text); border: 1px solid var(--c-border); }
-  .rb-I { background: var(--i-bg); color: var(--i-text); border: 1px solid var(--i-border); }
-  .right-panel { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-  .matrix-wrap { flex: 1; overflow: auto; padding: 16px; }
-  .matrix-table { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%; }
-  .matrix-table th:first-child, .matrix-table td:first-child { position: sticky; left: 0; z-index: 2; background: var(--bg); }
-  .matrix-table thead th:first-child { z-index: 3; background: var(--surface); }
-  .cat-row td { padding: 18px 12px 6px; font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  .cat-row td:first-child { padding-left: 0; }
-  .matrix-table thead th { position: sticky; top: 0; z-index: 2; background: var(--surface); border-bottom: 2px solid var(--border); padding: 8px 10px; font-size: 10px; font-weight: 600; color: var(--text-muted); text-align: center; white-space: nowrap; cursor: pointer; max-width: 90px; }
-  .matrix-table thead th:first-child { text-align: left; min-width: 220px; cursor: default; }
-  .matrix-table thead th:hover:not(:first-child), .matrix-table thead th.col-active { color: var(--accent); }
-  .col-sub { font-size: 9px; color: var(--text-dim); font-weight: 400; display: block; }
-  .cap-row:hover td { background: var(--surface2) !important; }
-  .cap-name-cell { padding: 7px 12px 7px 0; font-size: 12px; border-bottom: 1px solid var(--border); white-space: nowrap; min-width: 220px; }
-  .cap-warn-r .cap-name-cell { background: var(--warn-r) !important; }
-  .cap-warn-a .cap-name-cell { background: var(--warn-a) !important; }
-  .raci-cell { padding: 7px 6px; text-align: center; border-bottom: 1px solid var(--border); min-width: 72px; cursor: pointer; }
-  .raci-badge { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 24px; border-radius: 5px; font-size: 11px; font-weight: 800; border: 1px solid transparent; }
-  .raci-cell:hover .raci-badge { transform: scale(1.12); }
-  .raci-badge.R { background: var(--r-bg); color: var(--r-text); border-color: var(--r-border); }
-  .raci-badge.A { background: var(--a-bg); color: var(--a-text); border-color: var(--a-border); }
-  .raci-badge.C { background: var(--c-bg); color: var(--c-text); border-color: var(--c-border); }
-  .raci-badge.I { background: var(--i-bg); color: var(--i-text); border-color: var(--i-border); }
-  .raci-badge.empty { background: transparent; color: var(--text-dim); border-color: transparent; font-size: 14px; }
-  .inspector { height: 180px; min-height: 180px; background: var(--surface); border-top: 1px solid var(--border); padding: 12px 20px; overflow-y: auto; flex-shrink: 0; display: flex; gap: 24px; }
-  .inspector.empty { align-items: center; justify-content: center; }
-  .insp-hint { color: var(--text-dim); font-size: 12px; font-style: italic; }
-  .insp-col { flex: 1; min-width: 0; }
-  .insp-lbl { font-size: 9px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 4px; }
-  .insp-cap-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-  .insp-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 8px; }
-  .insp-role { font-size: 13px; font-weight: 600; }
-  .insp-contact { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .insp-email { color: var(--accent); text-decoration: none; }
-  .cmmc-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-  .cmmc-chip { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: #1a2040; color: #93c5fd; border: 1px solid #1e3a5f; }
-  .raci-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 700; margin-top: 4px; }
-  .raci-pill.R { background: var(--r-bg); color: var(--r-text); border: 1px solid var(--r-border); }
-  .raci-pill.A { background: var(--a-bg); color: var(--a-text); border: 1px solid var(--a-border); }
-  .raci-pill.C { background: var(--c-bg); color: var(--c-text); border: 1px solid var(--c-border); }
-  .raci-pill.I { background: var(--i-bg); color: var(--i-text); border: 1px solid var(--i-border); }
-  .raci-def { font-size: 11px; font-weight: 400; opacity: .8; }
-  .coverage-banner { background: #2a1a00; border-bottom: 1px solid #5a3a00; padding: 8px 20px; font-size: 11px; color: #fbbf24; display: none; }
-  .coverage-banner.visible { display: block; }
-  .legend { display: flex; align-items: center; gap: 12px; padding: 6px 16px; border-top: 1px solid var(--border); background: var(--surface); flex-shrink: 0; }
-  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text-muted); }
-  .legend-dot { width: 20px; height: 16px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; }
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsibility Matrix — CMMC</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --text-xs: #94a3b8;
+      --accent: #6366f1;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+
+    .app-header { background: #0f172a; color: #fff; padding: 16px 24px; }
+    .header-client { font-size: 13px; color: #c7d2fe; font-weight: 500; margin-bottom: 4px; }
+    .header-title { font-size: 16px; font-weight: 600; }
+    .header-meta { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+
+    .tab-nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; }
+    .tab-btn { padding: 14px 20px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .15s, border-color .15s; }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-btn:hover:not(.active) { color: var(--text); }
+    .tab-panel { display: none; padding: 24px; }
+    .tab-panel.active { display: block; }
+
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .filter-chip { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1.5px solid var(--border); background: var(--surface); color: var(--text-muted); transition: all .15s; }
+    .filter-chip.active { color: #fff; border-color: transparent; }
+    .filter-chip:hover:not(.active) { border-color: #94a3b8; color: var(--text); }
+
+    .matrix-wrap { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+    .matrix-table { width: 100%; border-collapse: collapse; }
+    .matrix-table th { padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); background: #f8fafc; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .matrix-table td { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .matrix-table tr:last-child td { border-bottom: none; }
+    .matrix-table tbody tr.cap-row:hover td { background: #f8fafc; }
+    .cat-row td { padding: 8px 16px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #fff; }
+    tr.hidden { display: none; }
+    .cap-name { font-weight: 500; line-height: 1.3; }
+    .cap-tool { font-size: 12px; color: var(--text-muted); margin-top: 3px; font-style: italic; }
+
+    .role-cell { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .role-info-name { font-size: 13px; font-weight: 500; }
+    .role-info-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .role-empty { color: var(--text-xs); font-size: 12px; font-style: italic; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 4px; }
+    .chip { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; color: #fff; }
+    .chip-vpn    { background: #16a34a; }
+    .chip-onprem { background: #64748b; }
+    .chip-vdi    { background: #7c3aed; }
+    .chip-cloud  { background: #2563eb; }
+
+    .freq { font-size: 12px; font-weight: 500; white-space: nowrap; }
+    .freq-oncall    { color: #dc2626; font-weight: 700; }
+    .freq-daily     { color: #1e293b; }
+    .freq-weekly    { color: #2563eb; }
+    .freq-monthly   { color: #7c3aed; }
+    .freq-quarterly { color: #059669; }
+    .freq-annually  { color: #64748b; }
+    .freq-asneeded  { color: #94a3b8; }
+
+    .person-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; }
+    .person-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .person-card-hdr { padding: 20px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid var(--border); }
+    .person-av { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .pci-name { font-size: 15px; font-weight: 600; }
+    .pci-sub  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .pci-dept { font-size: 12px; color: var(--text-xs); margin-top: 1px; }
+    .pci-counts { margin-top: 6px; display: flex; gap: 6px; }
+    .cnt-badge { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+    .cnt-primary { background: #dbeafe; color: #1d4ed8; }
+    .cnt-backup  { background: #fef3c7; color: #92400e; }
+    .person-card-body { padding: 8px 16px 12px; max-height: 280px; overflow-y: auto; }
+    .resp-item { padding: 7px 0; border-bottom: 1px solid #f1f5f9; }
+    .resp-item:last-child { border-bottom: none; }
+    .resp-hdr { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .resp-cap-name { font-size: 12px; font-weight: 500; }
+    .badge-sm { padding: 1px 6px; border-radius: 8px; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+    .badge-sm-p { background: #dbeafe; color: #1d4ed8; }
+    .badge-sm-b { background: #fef3c7; color: #92400e; }
+    .no-assign { padding: 10px 0; color: var(--text-xs); font-size: 12px; font-style: italic; }
+
+    .dir-wrap { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+    .dir-table { width: 100%; border-collapse: collapse; }
+    .dir-table th { padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); background: #f8fafc; border-bottom: 1px solid var(--border); }
+    .dir-table td { padding: 13px 16px; border-bottom: 1px solid #f1f5f9; font-size: 13px; vertical-align: middle; }
+    .dir-table tr:last-child td { border-bottom: none; }
+    .dir-pname { font-weight: 600; }
+    .dir-psub  { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .dir-email a { color: #2563eb; text-decoration: none; font-size: 12px; }
+    .dir-cnt { text-align: center; font-weight: 600; }
+    .dim { color: var(--text-xs); font-style: italic; }
+  </style>
 </head>
 <body>
-<header>
-  <div class="header-sub">
-    <div class="header-client" id="hdr-client"></div>
-    <div class="header-title">Information Security Responsibility Matrix</div>
-  </div>
-  <div class="header-meta" id="hdr-meta"></div>
-  <button class="header-btn" onclick="exportPNG()">Export PNG</button>
+
+<header class="app-header">
+  <div id="hdr-client" class="header-client"></div>
+  <div class="header-title">Information Security Responsibility Matrix</div>
+  <div id="hdr-meta" class="header-meta"></div>
 </header>
-<div id="coverage-banner" class="coverage-banner"></div>
-<div class="body">
-  <div class="left-panel" id="role-panel">
-    <div class="left-label">Roles</div>
-  </div>
-  <div class="right-panel">
-    <div class="matrix-wrap">
-      <table class="matrix-table" id="matrix"></table>
-    </div>
-    <div id="inspector" class="inspector empty">
-      <span class="insp-hint">Click any cell to inspect — role, capability, CMMC controls, and contact info</span>
-    </div>
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot rb-R">R</div> Responsible — does the work</div>
-      <div class="legend-item"><div class="legend-dot rb-A">A</div> Accountable — owns the outcome</div>
-      <div class="legend-item"><div class="legend-dot rb-C">C</div> Consulted — input required</div>
-      <div class="legend-item"><div class="legend-dot rb-I">I</div> Informed — kept in the loop</div>
-    </div>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="matrix">Responsibility Matrix</button>
+  <button class="tab-btn" data-tab="person">By Person</button>
+  <button class="tab-btn" data-tab="directory">Personnel Directory</button>
+</nav>
+
+<div id="tab-matrix" class="tab-panel active">
+  <div id="filter-bar" class="filter-bar"></div>
+  <div class="matrix-wrap">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th style="width:28%">Responsibility</th>
+          <th style="width:18%">Primary</th>
+          <th style="width:18%">Backup</th>
+          <th style="width:22%">Access Methods</th>
+          <th style="width:14%">Frequency</th>
+        </tr>
+      </thead>
+      <tbody id="matrix-body"></tbody>
+    </table>
   </div>
 </div>
+
+<div id="tab-person" class="tab-panel">
+  <div id="person-grid" class="person-grid"></div>
+</div>
+
+<div id="tab-directory" class="tab-panel">
+  <div class="dir-wrap">
+    <table class="dir-table">
+      <thead>
+        <tr>
+          <th style="width:26%">Name / Role</th>
+          <th style="width:20%">Department</th>
+          <th style="width:28%">Email</th>
+          <th style="width:13%" class="dir-cnt">Primary</th>
+          <th style="width:13%" class="dir-cnt">Backup</th>
+        </tr>
+      </thead>
+      <tbody id="dir-body"></tbody>
+    </table>
+  </div>
+</div>
+
 <script>
 const D = { /* RACI_DATA_PLACEHOLDER */ };
 
-/* ── DOM helper ── */
-function mk(tag, cls, txt) {
-  const el = document.createElement(tag);
+var CAT_COLORS = {
+  endpoint:   '#3b82f6',
+  identity:   '#8b5cf6',
+  vuln:       '#f97316',
+  network:    '#06b6d4',
+  cloud:      '#0ea5e9',
+  data:       '#ef4444',
+  monitoring: '#f59e0b',
+  ir:         '#dc2626',
+  governance: '#10b981',
+  physical:   '#78716c'
+};
+
+var AV_COLORS = [
+  '#4f46e5','#0891b2','#059669','#d97706','#dc2626',
+  '#7c3aed','#0284c7','#16a34a','#ca8a04','#e11d48',
+  '#0f766e','#b45309','#be185d','#1d4ed8','#7e22ce'
+];
+
+var ACCESS_CLS = { 'VPN':'chip-vpn', 'ON-PREM':'chip-onprem', 'VDI':'chip-vdi', 'CLOUD':'chip-cloud' };
+
+var FREQ_CLS = {
+  '24/7 On-Call':'freq-oncall',
+  'Daily':'freq-daily',
+  'Weekly':'freq-weekly',
+  'Monthly':'freq-monthly',
+  'Quarterly':'freq-quarterly',
+  'Annually':'freq-annually',
+  'As Needed':'freq-asneeded'
+};
+
+function mk(tag, cls) {
+  var el = document.createElement(tag);
   if (cls) el.className = cls;
-  if (txt !== undefined) el.textContent = txt;
   return el;
 }
 
-/* ── Index ── */
-const aMap = {};
-for (const a of D.assignments) {
-  if (!aMap[a.capability_id]) aMap[a.capability_id] = {};
-  aMap[a.capability_id][a.role_id] = a;
-}
-const capMap = {};
-for (const cat of D.categories)
-  for (const cap of cat.capabilities)
-    capMap[cap.id] = { ...cap, categoryName: cat.name };
-
-const RACI_DEF = {
-  R: 'Primary executor of this function.',
-  A: 'Owns the outcome — accountable if this function fails.',
-  C: 'Must be consulted before decisions are made.',
-  I: 'Receives updates; does not need to act.',
-};
-
-let activeRoleId = null;
-const noCovR = (D.coverage && D.coverage.capabilities_without_R) || [];
-const noCovA = (D.coverage && D.coverage.capabilities_without_A) || [];
-
-/* ── Coverage banner ── */
-function renderBanner() {
-  const b = document.getElementById('coverage-banner');
-  const parts = [];
-  function names(ids) { return ids.map(id => capMap[id] ? capMap[id].name : id).join(', '); }
-  if (noCovR.length) parts.push(noCovR.length + ' missing R: ' + names(noCovR));
-  if (noCovA.length) parts.push(noCovA.length + ' missing A: ' + names(noCovA));
-  if (parts.length) { b.textContent = '⚠ Coverage gaps — ' + parts.join(' | '); b.classList.add('visible'); }
+function tx(tag, cls, val) {
+  var el = mk(tag, cls);
+  el.textContent = val != null ? String(val) : '';
+  return el;
 }
 
-/* ── Role panel ── */
-function renderRoles() {
-  const panel = document.getElementById('role-panel');
-  for (const role of D.roles) {
-    const counts = { R: 0, A: 0, C: 0, I: 0 };
-    for (const a of D.assignments) if (a.role_id === role.id && counts[a.raci] !== undefined) counts[a.raci]++;
+function avColor(id) {
+  var h = 0;
+  for (var i = 0; i < id.length; i++) h = ((h * 31) + id.charCodeAt(i)) | 0;
+  return AV_COLORS[Math.abs(h) % AV_COLORS.length];
+}
 
-    const card = mk('div', 'role-card');
-    card.dataset.roleId = role.id;
-    card.appendChild(mk('div', 'role-title', role.title));
-    card.appendChild(mk('div', 'role-dept', role.department));
-    if (role.person_name) {
-      const pn = role.person_name + (role.person_title ? ' · ' + role.person_title : '');
-      card.appendChild(mk('div', 'role-person', pn));
-    }
-    if (role.person_email) {
-      const em = mk('div', 'role-email');
-      const a = mk('a', '', role.person_email);
-      a.href = 'mailto:' + role.person_email;
-      a.className = 'insp-email';
-      em.appendChild(a);
-      card.appendChild(em);
-    }
-    const badges = mk('div', 'role-badges');
-    for (const [k, v] of Object.entries(counts)) {
-      if (v) { const b = mk('span', 'rb rb-' + k, v + ' ' + k); badges.appendChild(b); }
-    }
-    card.appendChild(badges);
-    card.addEventListener('click', () => toggleRole(role.id));
-    panel.appendChild(card);
+function initials(role) {
+  var src = role.person_name || role.title;
+  var words = src.trim().split(/\s+/);
+  var out = '';
+  for (var i = 0; i < words.length && out.length < 2; i++) {
+    if (words[i] && /[A-Za-z]/.test(words[i][0])) out += words[i][0].toUpperCase();
   }
+  return out || '?';
 }
 
-function toggleRole(roleId) {
-  activeRoleId = activeRoleId === roleId ? null : roleId;
-  document.querySelectorAll('.role-card').forEach(c => c.classList.toggle('active', c.dataset.roleId === activeRoleId));
-  document.querySelectorAll('thead th[data-role-id]').forEach(th => th.classList.toggle('col-active', th.dataset.roleId === activeRoleId));
-  document.querySelectorAll('.raci-cell').forEach(c => {
-    c.style.opacity = (!activeRoleId || c.dataset.roleId === activeRoleId) ? '1' : '0.2';
+function roleById(id) {
+  if (!id) return null;
+  for (var i = 0; i < D.roles.length; i++) {
+    if (D.roles[i].id === id) return D.roles[i];
+  }
+  return null;
+}
+
+function capById(id) {
+  for (var i = 0; i < D.categories.length; i++) {
+    var caps = D.categories[i].capabilities;
+    for (var j = 0; j < caps.length; j++) {
+      if (caps[j].id === id) return caps[j];
+    }
+  }
+  return null;
+}
+
+function mkAvatar(role, cls, size) {
+  var el = mk('div', cls || 'avatar');
+  el.style.background = avColor(role.id);
+  if (size) {
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.fontSize = Math.floor(size * 0.35) + 'px';
+  }
+  el.textContent = initials(role);
+  return el;
+}
+
+function mkRoleCell(roleId) {
+  var wrap = mk('div', 'role-cell');
+  if (!roleId) { wrap.appendChild(tx('span', 'role-empty', '—')); return wrap; }
+  var role = roleById(roleId);
+  if (!role) { wrap.appendChild(tx('span', 'role-empty', roleId)); return wrap; }
+  wrap.appendChild(mkAvatar(role, 'avatar', null));
+  var info = mk('div', '');
+  info.appendChild(tx('div', 'role-info-name', role.person_name || role.title));
+  info.appendChild(tx('div', 'role-info-sub', role.person_name ? role.title : role.department));
+  wrap.appendChild(info);
+  return wrap;
+}
+
+function mkChips(methods) {
+  var wrap = mk('div', 'chips');
+  if (Array.isArray(methods)) {
+    methods.forEach(function(m) {
+      wrap.appendChild(tx('span', 'chip ' + (ACCESS_CLS[m] || ''), m));
+    });
+  }
+  return wrap;
+}
+
+function mkFreq(freq) {
+  return tx('span', 'freq ' + (FREQ_CLS[freq] || ''), freq || '—');
+}
+
+var activeCat = 'all';
+
+function buildFilter() {
+  var bar = document.getElementById('filter-bar');
+
+  var allBtn = mk('button', 'filter-chip active');
+  allBtn.textContent = 'All';
+  allBtn.setAttribute('data-cat', 'all');
+  allBtn.style.cssText = 'background:#1e293b;color:#fff;border-color:transparent';
+  bar.appendChild(allBtn);
+
+  D.categories.forEach(function(cat) {
+    var btn = mk('button', 'filter-chip');
+    btn.textContent = cat.name;
+    btn.setAttribute('data-cat', cat.id);
+    bar.appendChild(btn);
+  });
+
+  bar.addEventListener('click', function(e) {
+    var btn = e.target.closest('.filter-chip');
+    if (!btn) return;
+    activeCat = btn.getAttribute('data-cat');
+    applyFilter();
+    bar.querySelectorAll('.filter-chip').forEach(function(c) {
+      var on = c.getAttribute('data-cat') === activeCat;
+      c.classList.toggle('active', on);
+      if (on) {
+        c.style.background = CAT_COLORS[activeCat] || '#1e293b';
+        c.style.color = '#fff';
+        c.style.borderColor = 'transparent';
+      } else {
+        c.style.background = '';
+        c.style.color = '';
+        c.style.borderColor = '';
+      }
+    });
   });
 }
 
-/* ── Matrix ── */
-function shortTitle(t) {
-  return t.replace('Chief Information Security Officer', 'CISO')
-          .replace('Information System Security Officer', 'ISSO')
-          .replace('Systems Administrator', 'SysAdmin')
-          .replace('Network Engineer', 'Net Eng')
-          .replace('Cloud Administrator', 'Cloud Admin')
-          .replace('IT Director / CIO', 'IT Dir')
-          .replace('Legal / Contracts', 'Legal')
-          .replace(/ \(CISO\)| \(ISSO\)/g, '');
+function applyFilter() {
+  document.getElementById('matrix-body').querySelectorAll('tr').forEach(function(r) {
+    r.classList.toggle('hidden', activeCat !== 'all' && r.getAttribute('data-cat') !== activeCat);
+  });
 }
 
-function renderMatrix() {
-  const table = document.getElementById('matrix');
-  const thead = mk('thead');
-  const hRow = mk('tr');
-  const thCap = mk('th', '', 'Capability Area');
-  hRow.appendChild(thCap);
-  for (const role of D.roles) {
-    const th = mk('th');
-    th.dataset.roleId = role.id;
-    th.appendChild(mk('span', '', shortTitle(role.title)));
-    th.appendChild(mk('span', 'col-sub', role.department));
-    th.addEventListener('click', () => toggleRole(role.id));
-    hRow.appendChild(th);
-  }
-  thead.appendChild(hRow);
-  table.appendChild(thead);
+function buildMatrix() {
+  var tbody = document.getElementById('matrix-body');
+  var amap = {};
+  D.assignments.forEach(function(a) { amap[a.capability_id] = a; });
 
-  const tbody = mk('tbody');
-  for (const cat of D.categories) {
-    const catRow = mk('tr', 'cat-row');
-    const catTd = mk('td', '', cat.name.toUpperCase());
-    catTd.colSpan = D.roles.length + 1;
+  D.categories.forEach(function(cat) {
+    var color = CAT_COLORS[cat.id] || '#64748b';
+
+    var catRow = mk('tr', 'cat-row');
+    catRow.setAttribute('data-cat', cat.id);
+    catRow.style.background = color;
+    var catTd = document.createElement('td');
+    catTd.colSpan = 5;
+    catTd.textContent = cat.name;
     catRow.appendChild(catTd);
     tbody.appendChild(catRow);
 
-    for (const cap of cat.capabilities) {
-      const row = mk('tr', 'cap-row');
-      if (noCovR.includes(cap.id)) row.classList.add('cap-warn-r');
-      else if (noCovA.includes(cap.id)) row.classList.add('cap-warn-a');
+    cat.capabilities.forEach(function(cap) {
+      var a = amap[cap.id] || null;
+      var row = mk('tr', 'cap-row');
+      row.setAttribute('data-cat', cat.id);
 
-      row.appendChild(mk('td', 'cap-name-cell', cap.name));
+      var td1 = document.createElement('td');
+      td1.appendChild(tx('div', 'cap-name', cap.name));
+      if (a && a.tool_description) td1.appendChild(tx('div', 'cap-tool', a.tool_description));
+      row.appendChild(td1);
 
-      for (const role of D.roles) {
-        const assignment = (aMap[cap.id] || {})[role.id];
-        const td = mk('td', 'raci-cell');
-        td.dataset.capId = cap.id;
-        td.dataset.roleId = role.id;
-        const badge = mk('span', 'raci-badge ' + (assignment ? assignment.raci : 'empty'),
-                         assignment ? assignment.raci : '·');
-        td.appendChild(badge);
-        if (assignment) td.addEventListener('click', () => showInspector(cap, role, assignment));
-        else td.style.cursor = 'default';
-        row.appendChild(td);
-      }
+      var td2 = document.createElement('td');
+      td2.appendChild(mkRoleCell(a ? a.primary_role_id : null));
+      row.appendChild(td2);
+
+      var td3 = document.createElement('td');
+      td3.appendChild(mkRoleCell(a ? a.backup_role_id : null));
+      row.appendChild(td3);
+
+      var td4 = document.createElement('td');
+      td4.appendChild(mkChips(a ? a.access_methods : []));
+      row.appendChild(td4);
+
+      var td5 = document.createElement('td');
+      td5.appendChild(mkFreq(a ? a.frequency : null));
+      row.appendChild(td5);
+
       tbody.appendChild(row);
+    });
+  });
+}
+
+function buildByPerson() {
+  var grid = document.getElementById('person-grid');
+
+  D.roles.forEach(function(role) {
+    var primList = D.assignments.filter(function(a) { return a.primary_role_id === role.id; });
+    var backList = D.assignments.filter(function(a) { return a.backup_role_id  === role.id; });
+
+    var card = mk('div', 'person-card');
+
+    var hdr = mk('div', 'person-card-hdr');
+    hdr.appendChild(mkAvatar(role, 'person-av', 52));
+
+    var pci = mk('div', '');
+    pci.appendChild(tx('div', 'pci-name', role.person_name || role.title));
+    if (role.person_name) pci.appendChild(tx('div', 'pci-sub', role.title));
+    pci.appendChild(tx('div', 'pci-dept', role.department));
+    var counts = mk('div', 'pci-counts');
+    counts.appendChild(tx('span', 'cnt-badge cnt-primary', primList.length + ' Primary'));
+    counts.appendChild(tx('span', 'cnt-badge cnt-backup',  backList.length  + ' Backup'));
+    pci.appendChild(counts);
+    hdr.appendChild(pci);
+    card.appendChild(hdr);
+
+    var body = mk('div', 'person-card-body');
+    var all = primList.map(function(a) { return {a:a, type:'p'}; })
+                .concat(backList.map(function(a) { return {a:a, type:'b'}; }));
+
+    if (all.length === 0) {
+      body.appendChild(tx('p', 'no-assign', 'No responsibilities assigned'));
+    } else {
+      all.forEach(function(item) {
+        var cap = capById(item.a.capability_id);
+        var ri = mk('div', 'resp-item');
+        var rh = mk('div', 'resp-hdr');
+        rh.appendChild(tx('span', 'badge-sm ' + (item.type==='p' ? 'badge-sm-p' : 'badge-sm-b'),
+                          item.type === 'p' ? 'PRIMARY' : 'BACKUP'));
+        rh.appendChild(tx('span', 'resp-cap-name', cap ? cap.name : item.a.capability_id));
+        ri.appendChild(rh);
+        ri.appendChild(mkChips(item.a.access_methods));
+        body.appendChild(ri);
+      });
     }
-  }
-  table.appendChild(tbody);
+    card.appendChild(body);
+    grid.appendChild(card);
+  });
 }
 
-/* ── Inspector ── */
-function showInspector(cap, role, assignment) {
-  const insp = document.getElementById('inspector');
-  insp.classList.remove('empty');
-  while (insp.firstChild) insp.removeChild(insp.firstChild);
+function buildDirectory() {
+  var tbody = document.getElementById('dir-body');
+  D.roles.forEach(function(role) {
+    var pc = D.assignments.filter(function(a) { return a.primary_role_id === role.id; }).length;
+    var bc = D.assignments.filter(function(a) { return a.backup_role_id  === role.id; }).length;
 
-  const fullCap = capMap[cap.id] || cap;
+    var row = document.createElement('tr');
 
-  const col1 = mk('div', 'insp-col');
-  col1.style.maxWidth = '360px';
-  col1.appendChild(mk('div', 'insp-cap-name', cap.name));
-  col1.appendChild(mk('div', 'insp-desc', fullCap.description || ''));
-  if ((fullCap.cmmc_controls || []).length) {
-    col1.appendChild(mk('div', 'insp-lbl', 'CMMC 800-171 Controls'));
-    const chips = mk('div', 'cmmc-chips');
-    for (const c of fullCap.cmmc_controls) chips.appendChild(mk('span', 'cmmc-chip', c));
-    col1.appendChild(chips);
-  }
-  insp.appendChild(col1);
+    var td1 = document.createElement('td');
+    if (role.person_name) {
+      td1.appendChild(tx('div', 'dir-pname', role.person_name));
+      td1.appendChild(tx('div', 'dir-psub', role.title));
+    } else {
+      td1.appendChild(tx('div', 'dir-pname dim', '— Unassigned —'));
+      td1.appendChild(tx('div', 'dir-psub', role.title));
+    }
+    row.appendChild(td1);
 
-  const col2 = mk('div', 'insp-col');
-  col2.style.maxWidth = '220px';
-  col2.appendChild(mk('div', 'insp-lbl', 'Role'));
-  col2.appendChild(mk('div', 'insp-role', role.title));
-  col2.appendChild(mk('div', 'insp-contact', role.department));
-  if (role.person_name) {
-    const pn = role.person_name + (role.person_title ? ' · ' + role.person_title : '');
-    const pd = mk('div', 'insp-contact', pn);
-    pd.style.marginTop = '6px';
-    col2.appendChild(pd);
-  }
-  if (role.person_email) {
-    const ed = mk('div', 'insp-contact');
-    const a = mk('a', 'insp-email', role.person_email);
-    a.href = 'mailto:' + role.person_email;
-    ed.appendChild(a);
-    col2.appendChild(ed);
-  }
-  insp.appendChild(col2);
+    row.appendChild(tx('td', '', role.department));
 
-  const col3 = mk('div', 'insp-col');
-  col3.style.maxWidth = '220px';
-  col3.appendChild(mk('div', 'insp-lbl', 'Responsibility'));
-  const pill = mk('div', 'raci-pill ' + assignment.raci, assignment.raci + ' ');
-  pill.appendChild(mk('span', 'raci-def', RACI_DEF[assignment.raci] || ''));
-  col3.appendChild(pill);
-  if (assignment.notes) {
-    const n = mk('div', 'insp-contact', assignment.notes);
-    n.style.marginTop = '8px';
-    n.style.fontStyle = 'italic';
-    col3.appendChild(n);
-  }
-  insp.appendChild(col3);
+    var td3 = document.createElement('td');
+    td3.className = 'dir-email';
+    if (role.person_email) {
+      var a = document.createElement('a');
+      a.href = 'mailto:' + role.person_email;
+      a.textContent = role.person_email;
+      td3.appendChild(a);
+    } else {
+      td3.appendChild(tx('span', 'dim', '—'));
+    }
+    row.appendChild(td3);
+
+    row.appendChild(tx('td', 'dir-cnt', String(pc)));
+    row.appendChild(tx('td', 'dir-cnt', String(bc)));
+    tbody.appendChild(row);
+  });
 }
 
-/* ── Export ── */
-function exportPNG() {
-  alert('Export PNG: use browser Print → Save as PDF, or take a screenshot.\n\nChrome: Ctrl+Shift+P → "Capture full size screenshot"');
+function buildHeader() {
+  document.title = D.client + ' — Responsibility Matrix';
+  document.getElementById('hdr-client').textContent = D.client;
+  var d = new Date(D.last_updated);
+  var ds = isNaN(d.getTime()) ? D.last_updated :
+    d.toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+  document.getElementById('hdr-meta').textContent = 'v' + D.version + '  ·  ' + ds;
 }
 
-/* ── Init ── */
-function init() {
-  const hc = document.getElementById('hdr-client');
-  hc.textContent = D.client || 'Organization';
-  const hm = document.getElementById('hdr-meta');
-  const d = D.last_updated ? new Date(D.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
-  hm.textContent = 'v' + (D.version || '0.1.0') + (d ? ' · ' + d : '');
-  renderBanner();
-  renderRoles();
-  renderMatrix();
-}
+document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var t = btn.getAttribute('data-tab');
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.toggle('active', b===btn); });
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.toggle('active', p.id==='tab-'+t); });
+  });
+});
 
-init();
+buildHeader();
+buildFilter();
+buildMatrix();
+buildByPerson();
+buildDirectory();
 </script>
 </body>
 </html>

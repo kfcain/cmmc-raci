@@ -2,23 +2,17 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "raci.schema.json",
   "title": "CMMC Information Security Responsibility Matrix",
+  "description": "v0.2.0 — Primary/Backup model with access methods, frequency, and tool descriptions",
   "type": "object",
-  "required": ["schema_version", "id", "client", "version", "last_updated", "roles", "assignments", "coverage_check"],
+  "required": ["schema_version", "id", "client", "version", "last_updated", "roles", "assignments"],
   "properties": {
     "schema_version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
     "id": { "type": "string" },
     "client": { "type": "string", "minLength": 1 },
     "version": { "type": "string" },
     "last_updated": { "type": "string", "format": "date-time" },
-    "roles": {
-      "type": "array",
-      "items": { "$ref": "#/$defs/Role" }
-    },
-    "assignments": {
-      "type": "array",
-      "items": { "$ref": "#/$defs/Assignment" }
-    },
-    "coverage_check": { "$ref": "#/$defs/CoverageCheck" }
+    "roles": { "type": "array", "items": { "$ref": "#/$defs/Role" } },
+    "assignments": { "type": "array", "items": { "$ref": "#/$defs/Assignment" } }
   },
   "$defs": {
     "Role": {
@@ -35,21 +29,21 @@
     },
     "Assignment": {
       "type": "object",
-      "required": ["capability_id", "role_id", "raci"],
+      "required": ["capability_id", "primary_role_id"],
       "properties": {
         "capability_id": { "type": "string" },
-        "role_id": { "type": "string" },
-        "raci": { "type": "string", "enum": ["R", "A", "C", "I"] },
+        "primary_role_id": { "type": "string" },
+        "backup_role_id": { "type": ["string", "null"] },
+        "tool_description": { "type": ["string", "null"] },
+        "access_methods": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["VPN", "ON-PREM", "VDI", "CLOUD"] }
+        },
+        "frequency": {
+          "type": ["string", "null"],
+          "enum": ["Daily", "Weekly", "Monthly", "Quarterly", "Annually", "As Needed", "24/7 On-Call", null]
+        },
         "notes": { "type": ["string", "null"] }
-      }
-    },
-    "CoverageCheck": {
-      "type": "object",
-      "required": ["capabilities_without_R", "capabilities_without_A", "last_validated"],
-      "properties": {
-        "capabilities_without_R": { "type": "array", "items": { "type": "string" } },
-        "capabilities_without_A": { "type": "array", "items": { "type": "string" } },
-        "last_validated": { "type": ["string", "null"] }
       }
     }
   }

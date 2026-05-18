@@ -1,6 +1,6 @@
 {
   "name": "cmmc-raci-v1",
-  "version": "0.1.0",
-  "description": "CMMC Information Security Responsibility Matrix — maps infosec capability areas to organizational roles with RACI assignments and CMMC control cross-walk.",
+  "version": "0.2.0",
+  "description": "CMMC Information Security Responsibility Matrix — maps 40 infosec capability areas to organizational roles with Primary/Backup assignments, access methods, frequency, and CMMC control cross-walk.",
   "keywords": ["cmmc", "nist-800-171", "raci", "responsibility-matrix", "infosec", "roles"]
 }

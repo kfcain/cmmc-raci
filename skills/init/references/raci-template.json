@@ -66,254 +66,365 @@
     }
   ],
   "assignments": [
-    { "capability_id": "cap-edr",             "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-edr",             "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-edr",             "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-edr",             "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-edr",             "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-av",              "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-av",              "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-av",              "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-av",              "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-mdm",             "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-mdm",             "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-mdm",             "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-mdm",             "role_id": "role-hr",         "raci": "I", "notes": null },
-    { "capability_id": "cap-mdm",             "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-device-encryption","role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-device-encryption","role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-device-encryption","role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-device-encryption","role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-device-encryption","role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-iam",             "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-iam",             "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-iam",             "role_id": "role-sysadmin",   "raci": "C", "notes": null },
-    { "capability_id": "cap-iam",             "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-iam",             "role_id": "role-hr",         "raci": "C", "notes": null },
-    { "capability_id": "cap-iam",             "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-mfa",             "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-mfa",             "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-mfa",             "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-mfa",             "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-mfa",             "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-pam",             "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-pam",             "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-pam",             "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-pam",             "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-pam",             "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-directory",       "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-directory",       "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-directory",       "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-directory",       "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-directory",       "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-vuln-scan",       "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-vuln-scan",       "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-vuln-scan",       "role_id": "role-sysadmin",   "raci": "C", "notes": null },
-    { "capability_id": "cap-vuln-scan",       "role_id": "role-neteng",     "raci": "C", "notes": null },
-    { "capability_id": "cap-vuln-scan",       "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-vuln-scan",       "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-pentest",         "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-pentest",         "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-pentest",         "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-pentest",         "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-patch",           "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-patch",           "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-patch",           "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-patch",           "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-patch",           "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-patch",           "role_id": "role-itdir",      "raci": "A", "notes": null },
-
-    { "capability_id": "cap-firewall",        "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-firewall",        "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-firewall",        "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-firewall",        "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-firewall",        "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-segmentation",    "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-segmentation",    "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-segmentation",    "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-segmentation",    "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-segmentation",    "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-vpn",             "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-vpn",             "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-vpn",             "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-vpn",             "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-vpn",             "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-wireless",        "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-wireless",        "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-wireless",        "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-wireless",        "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-dns",             "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-dns",             "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-dns",             "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-dns",             "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-dns",             "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-cloud-infra",     "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-cloud-infra",     "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-cloud-infra",     "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-cloud-infra",     "role_id": "role-neteng",     "raci": "C", "notes": null },
-    { "capability_id": "cap-cloud-infra",     "role_id": "role-itdir",      "raci": "A", "notes": null },
-
-    { "capability_id": "cap-saas",            "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-saas",            "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-saas",            "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-saas",            "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-casb",            "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-casb",            "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-casb",            "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-casb",            "role_id": "role-neteng",     "raci": "C", "notes": null },
-    { "capability_id": "cap-casb",            "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-cloud-backup",    "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-cloud-backup",    "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-cloud-backup",    "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-cloud-backup",    "role_id": "role-itdir",      "raci": "A", "notes": null },
-
-    { "capability_id": "cap-data-class",      "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-data-class",      "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-data-class",      "role_id": "role-hr",         "raci": "C", "notes": null },
-    { "capability_id": "cap-data-class",      "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-data-class",      "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-dlp",             "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-dlp",             "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-dlp",             "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-dlp",             "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-dlp",             "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-encrypt-rest",    "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-encrypt-rest",    "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-encrypt-rest",    "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-encrypt-rest",    "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-encrypt-rest",    "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-encrypt-transit", "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-encrypt-transit", "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-encrypt-transit", "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-encrypt-transit", "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-encrypt-transit", "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-media",           "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-media",           "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-media",           "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-media",           "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-siem",            "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-siem",            "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-siem",            "role_id": "role-sysadmin",   "raci": "C", "notes": null },
-    { "capability_id": "cap-siem",            "role_id": "role-neteng",     "raci": "C", "notes": null },
-    { "capability_id": "cap-siem",            "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-siem",            "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-logging",         "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-logging",         "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-logging",         "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-logging",         "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-logging",         "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-logging",         "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-secops",          "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-secops",          "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-secops",          "role_id": "role-sysadmin",   "raci": "C", "notes": null },
-    { "capability_id": "cap-secops",          "role_id": "role-neteng",     "raci": "C", "notes": null },
-    { "capability_id": "cap-secops",          "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-secops",          "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-ir-plan",         "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-ir-plan",         "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-ir-plan",         "role_id": "role-sysadmin",   "raci": "C", "notes": null },
-    { "capability_id": "cap-ir-plan",         "role_id": "role-neteng",     "raci": "C", "notes": null },
-    { "capability_id": "cap-ir-plan",         "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-ir-plan",         "role_id": "role-hr",         "raci": "C", "notes": null },
-    { "capability_id": "cap-ir-plan",         "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-ir-plan",         "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-ir-handle",       "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-ir-handle",       "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-ir-handle",       "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-ir-handle",       "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-ir-handle",       "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-ir-handle",       "role_id": "role-hr",         "raci": "I", "notes": null },
-    { "capability_id": "cap-ir-handle",       "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-ir-handle",       "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-bcdr",            "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-bcdr",            "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-bcdr",            "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-bcdr",            "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-bcdr",            "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-bcdr",            "role_id": "role-hr",         "raci": "I", "notes": null },
-    { "capability_id": "cap-bcdr",            "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-bcdr",            "role_id": "role-itdir",      "raci": "A", "notes": null },
-
-    { "capability_id": "cap-policy",          "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-policy",          "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-policy",          "role_id": "role-hr",         "raci": "C", "notes": null },
-    { "capability_id": "cap-policy",          "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-policy",          "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-risk",            "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-risk",            "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-risk",            "role_id": "role-sysadmin",   "raci": "C", "notes": null },
-    { "capability_id": "cap-risk",            "role_id": "role-neteng",     "raci": "C", "notes": null },
-    { "capability_id": "cap-risk",            "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-risk",            "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-risk",            "role_id": "role-itdir",      "raci": "C", "notes": null },
-
-    { "capability_id": "cap-training",        "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-training",        "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-training",        "role_id": "role-hr",         "raci": "R", "notes": null },
-    { "capability_id": "cap-training",        "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-training",        "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-cmmc",            "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-cmmc",            "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-cmmc",            "role_id": "role-sysadmin",   "raci": "C", "notes": null },
-    { "capability_id": "cap-cmmc",            "role_id": "role-neteng",     "raci": "C", "notes": null },
-    { "capability_id": "cap-cmmc",            "role_id": "role-cloudadmin", "raci": "C", "notes": null },
-    { "capability_id": "cap-cmmc",            "role_id": "role-legal",      "raci": "C", "notes": null },
-    { "capability_id": "cap-cmmc",            "role_id": "role-itdir",      "raci": "C", "notes": null },
-
-    { "capability_id": "cap-supply-chain",    "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-supply-chain",    "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-supply-chain",    "role_id": "role-legal",      "raci": "R", "notes": null },
-    { "capability_id": "cap-supply-chain",    "role_id": "role-itdir",      "raci": "I", "notes": null },
-
-    { "capability_id": "cap-config-mgmt",     "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-config-mgmt",     "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-config-mgmt",     "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-config-mgmt",     "role_id": "role-neteng",     "raci": "R", "notes": null },
-    { "capability_id": "cap-config-mgmt",     "role_id": "role-cloudadmin", "raci": "R", "notes": null },
-    { "capability_id": "cap-config-mgmt",     "role_id": "role-itdir",      "raci": "A", "notes": null },
-
-    { "capability_id": "cap-physical-access", "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-physical-access", "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-physical-access", "role_id": "role-hr",         "raci": "C", "notes": null },
-    { "capability_id": "cap-physical-access", "role_id": "role-itdir",      "raci": "R", "notes": null },
-
-    { "capability_id": "cap-facility",        "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-facility",        "role_id": "role-isso",       "raci": "C", "notes": null },
-    { "capability_id": "cap-facility",        "role_id": "role-hr",         "raci": "C", "notes": null },
-    { "capability_id": "cap-facility",        "role_id": "role-itdir",      "raci": "R", "notes": null },
-
-    { "capability_id": "cap-equipment",       "role_id": "role-ciso",       "raci": "A", "notes": null },
-    { "capability_id": "cap-equipment",       "role_id": "role-isso",       "raci": "R", "notes": null },
-    { "capability_id": "cap-equipment",       "role_id": "role-sysadmin",   "raci": "R", "notes": null },
-    { "capability_id": "cap-equipment",       "role_id": "role-itdir",      "raci": "I", "notes": null }
+    {
+      "capability_id": "cap-edr",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN"],
+      "frequency": "Daily",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-av",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-mdm",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-device-encryption",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN"],
+      "frequency": "Monthly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-iam",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN", "CLOUD"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-mfa",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "As Needed",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-pam",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN"],
+      "frequency": "Daily",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-directory",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN", "CLOUD"],
+      "frequency": "Daily",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-vuln-scan",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "Monthly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-pentest",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-ciso",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN", "CLOUD"],
+      "frequency": "Annually",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-patch",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-itdir",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN", "CLOUD"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-firewall",
+      "primary_role_id": "role-neteng",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-segmentation",
+      "primary_role_id": "role-neteng",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN"],
+      "frequency": "Quarterly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-vpn",
+      "primary_role_id": "role-neteng",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["ON-PREM"],
+      "frequency": "Daily",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-wireless",
+      "primary_role_id": "role-neteng",
+      "backup_role_id": "role-itdir",
+      "tool_description": null,
+      "access_methods": ["ON-PREM"],
+      "frequency": "Monthly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-dns",
+      "primary_role_id": "role-neteng",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-cloud-infra",
+      "primary_role_id": "role-cloudadmin",
+      "backup_role_id": "role-itdir",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-saas",
+      "primary_role_id": "role-cloudadmin",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-casb",
+      "primary_role_id": "role-cloudadmin",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "Daily",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-cloud-backup",
+      "primary_role_id": "role-cloudadmin",
+      "backup_role_id": "role-itdir",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-data-class",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-ciso",
+      "tool_description": null,
+      "access_methods": ["VPN", "CLOUD"],
+      "frequency": "Quarterly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-dlp",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-cloudadmin",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-encrypt-rest",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-cloudadmin",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN", "CLOUD"],
+      "frequency": "Quarterly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-encrypt-transit",
+      "primary_role_id": "role-neteng",
+      "backup_role_id": "role-cloudadmin",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN", "CLOUD"],
+      "frequency": "Quarterly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-media",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["ON-PREM"],
+      "frequency": "As Needed",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-siem",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "24/7 On-Call",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-logging",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "Daily",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-secops",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-ciso",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "24/7 On-Call",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-ir-plan",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-ciso",
+      "tool_description": null,
+      "access_methods": ["VPN", "CLOUD"],
+      "frequency": "Annually",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-ir-handle",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN", "CLOUD"],
+      "frequency": "As Needed",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-bcdr",
+      "primary_role_id": "role-itdir",
+      "backup_role_id": "role-sysadmin",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN", "CLOUD"],
+      "frequency": "Annually",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-policy",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-ciso",
+      "tool_description": null,
+      "access_methods": ["VPN", "CLOUD"],
+      "frequency": "Annually",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-risk",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-ciso",
+      "tool_description": null,
+      "access_methods": ["VPN", "CLOUD"],
+      "frequency": "Annually",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-training",
+      "primary_role_id": "role-hr",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["CLOUD", "VPN"],
+      "frequency": "Annually",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-cmmc",
+      "primary_role_id": "role-isso",
+      "backup_role_id": "role-ciso",
+      "tool_description": null,
+      "access_methods": ["VPN", "CLOUD"],
+      "frequency": "Annually",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-supply-chain",
+      "primary_role_id": "role-legal",
+      "backup_role_id": "role-ciso",
+      "tool_description": null,
+      "access_methods": ["VPN", "CLOUD"],
+      "frequency": "Annually",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-config-mgmt",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-itdir",
+      "tool_description": null,
+      "access_methods": ["ON-PREM", "VPN", "CLOUD"],
+      "frequency": "Weekly",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-physical-access",
+      "primary_role_id": "role-itdir",
+      "backup_role_id": "role-hr",
+      "tool_description": null,
+      "access_methods": ["ON-PREM"],
+      "frequency": "Daily",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-facility",
+      "primary_role_id": "role-itdir",
+      "backup_role_id": "role-hr",
+      "tool_description": null,
+      "access_methods": ["ON-PREM"],
+      "frequency": "Daily",
+      "notes": null
+    },
+    {
+      "capability_id": "cap-equipment",
+      "primary_role_id": "role-sysadmin",
+      "backup_role_id": "role-isso",
+      "tool_description": null,
+      "access_methods": ["ON-PREM"],
+      "frequency": "As Needed",
+      "notes": null
+    }
   ]
 }

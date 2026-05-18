@@ -6,72 +6,92 @@ description: Generate the interactive HTML responsibility matrix viewer from rac
 # cmmc-raci:view — Generate Interactive HTML Viewer
 
 ## Purpose
-Reads `raci.json` and injects its data into `viewer.template.html` to produce a self-contained, interactive HTML file. The viewer shows a matrix grid of capability areas vs. roles with R/A/C/I badges, clickable role cards, and an inspector panel displaying CMMC control mappings and contact info.
+Reads `raci.json` and injects its data into `viewer.template.html` to produce a self-contained, interactive HTML file. The viewer shows a three-tab layout: Responsibility Matrix (category filter chips + Primary/Backup table), By Person (role cards with counts and responsibility lists), and Personnel Directory.
 
 ## Preconditions
 `~/cmmc-raci-data/{client-slug}/raci.json` must exist.
 
 ## Reference Files
 - `skills/view/viewer.template.html` — the HTML template to inject data into
-- `skills/init/references/capability-areas.json` — capability area details for inspector panel
+- `skills/init/references/capability-areas.json` — capability area details (names, descriptions, CMMC controls)
 
 ## What to Do
 
 ### Step 1 — Identify client
-If not already known from context, ask which client. Read `~/cmmc-raci-data/{client-slug}/raci.json` and `capability-areas.json`.
+If not already known from context, ask which client. Read `~/cmmc-raci-data/{client-slug}/raci.json` and `skills/init/references/capability-areas.json`.
 
 ### Step 2 — Build the D object
-Construct the following JavaScript object:
+Construct the following JavaScript object (valid JS, not JSON-stringified):
 
 ```javascript
 const D = {
-  client: "<org name>",
-  version: "<version>",
-  last_updated: "<ISO timestamp>",
+  client: "<org name from raci.json>",
+  version: "<version from raci.json>",
+  last_updated: "<ISO timestamp from raci.json>",
   roles: [
-    { id: "role-ciso", title: "Chief Information Security Officer (CISO)", department: "Executive / Security", person_name: null, person_email: null, person_title: null },
-    // ... all roles from raci.json
+    {
+      id: "role-ciso",
+      title: "Chief Information Security Officer (CISO)",
+      department: "Executive / Security",
+      person_name: null,
+      person_email: null,
+      person_title: null
+    }
+    // ... all roles from raci.json, in order
   ],
   categories: [
     {
       id: "endpoint",
       name: "Endpoint Security",
       capabilities: [
-        { id: "cap-edr", name: "Endpoint Detection & Response (EDR)", description: "...", cmmc_controls: ["3.14.1", "3.14.2", "3.14.6", "3.14.7"] },
+        {
+          id: "cap-edr",
+          name: "Endpoint Detection & Response (EDR)",
+          description: "Deployment, configuration, and ongoing monitoring of EDR tooling...",
+          cmmc_controls: ["3.14.1", "3.14.2", "3.14.6", "3.14.7"]
+        }
         // ... all capabilities in this category from capability-areas.json
       ]
-    },
-    // ... all 9 categories
+    }
+    // ... all 10 categories, preserving order from capability-areas.json
   ],
   assignments: [
-    { capability_id: "cap-edr", role_id: "role-ciso", raci: "A", notes: null },
-    // ... all assignments from raci.json
-  ],
-  coverage: {
-    capabilities_without_R: [],
-    capabilities_without_A: []
-  }
+    {
+      capability_id: "cap-edr",
+      primary_role_id: "role-sysadmin",
+      backup_role_id: "role-isso",
+      tool_description: null,
+      access_methods: ["ON-PREM", "VPN"],
+      frequency: "Daily",
+      notes: null
+    }
+    // ... all assignments from raci.json (one record per capability)
+  ]
 };
 ```
 
-The `categories` array must be built by joining `capability-areas.json` category structure with the `description` and `cmmc_controls` fields from that same file.
+Key rules:
+- `categories` is built from `capability-areas.json` (includes full capability details: name, description, cmmc_controls)
+- `assignments` is copied directly from `raci.json` — primary/backup model, one flat record per capability
+- `roles` is copied directly from `raci.json`
+- Null values use JS `null` (not Python `None` or JSON string "null")
 
 ### Step 3 — Inject into template
 1. Read `skills/view/viewer.template.html`
-2. Find the line: `const D = { /* RACI_DATA_PLACEHOLDER */ };`
-3. Replace it with the full `const D = { ... };` block constructed in Step 2
-4. Replace `<title>RACI Viewer</title>` with `<title>{Org Name} — CMMC Responsibility Matrix</title>`
+2. Find the exact line: `const D = { /* RACI_DATA_PLACEHOLDER */ };`
+3. Replace that entire line with the full `const D = { ... };` block from Step 2
 
 ### Step 4 — Write output
+Create `~/cmmc-raci-data/{client-slug}/exports/` if it does not exist.
 Write the result to `~/cmmc-raci-data/{client-slug}/exports/viewer.html`.
 
 ### Step 5 — Confirm to user
-Print:
 ```
 Viewer generated for {Org Name}
   Output: ~/cmmc-raci-data/{client-slug}/exports/viewer.html
 
-Open in any browser. No server required.
+Open in any browser — no server required.
+Tabs: Responsibility Matrix | By Person | Personnel Directory
 ```
 
 ## What This Skill Does NOT Do
@@ -79,7 +99,7 @@ Open in any browser. No server required.
 - Does not modify `raci.json`
 
 ## Notes for Claude
-- The `const D = { /* RACI_DATA_PLACEHOLDER */ };` line is the ONLY injection point — do not replace any other part of the template
-- The D object must be valid JavaScript (not JSON) — strings are fine, but do not use JSON.stringify wrapping
-- The categories array in D must follow the exact structure shown above — the viewer JavaScript depends on it
-- If coverage_check has gaps, they are passed in D.coverage so the viewer can highlight them
+- The injection point `const D = { /* RACI_DATA_PLACEHOLDER */ };` is the ONLY line to replace — do not touch any other part of the template
+- The D object must be syntactically valid JavaScript
+- `categories` must follow the exact structure above — the viewer JS iterates `D.categories[i].capabilities` to build each matrix section
+- `assignments` is a flat array (one record per capability), not one record per role-capability pair
